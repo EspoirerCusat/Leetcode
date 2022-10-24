@@ -20,10 +20,10 @@ class Solution {
         }
         vector<alphanumeric> v;
         for(auto& itr : mp){
-            alphanumeric a;
-            a.name = itr.first;
-            a.count = itr.second;
-            v.push_back(a);
+            // alphanumeric a;
+            // a.name = itr.first;
+            // a.count = itr.second;
+            v.push_back({itr.first,itr.second});
         }
         return v;
     }
