@@ -10,76 +10,15 @@ using namespace std;
 class Solution{
 public:
     int findMin(int n, char a[]){
-        vector<char> st;
+        int r,b,g; r = b = g = 0;
         for(int i=0; i<n; i++){
-            if(st.size() > 0){
-                if(st.back() == a[i]){
-                    st.push_back(a[i]);
-                }else{
-                    if(st.back() == 'R'){
-                        if(a[i] == 'B'){
-                            st.pop_back();
-                            st.push_back('G');
-                        }else{
-                            st.pop_back();
-                            st.push_back('B');
-                        }
-                    }else if(st.back() == 'B'){
-                        if(a[i] == 'R'){
-                            st.pop_back();
-                            st.push_back('G');
-                        }else{
-                            st.pop_back();
-                            st.push_back('R');
-                        }
-                    }else{
-                        if(a[i] == 'B'){
-                            st.pop_back();
-                            st.push_back('R');
-                        }else{
-                            st.pop_back();
-                            st.push_back('B');
-                        }
-                    }
-                }
-                while(st.size() >= 2 && st[st.size()-1] != st[st.size()-2]){
-                    if(st[st.size()-1] == 'R'){
-                        if(st[st.size()-2] == 'B'){
-                            st.pop_back();
-                            st.pop_back();
-                            st.push_back('G');
-                        }else{
-                            st.pop_back();
-                            st.pop_back();
-                            st.push_back('B');
-                        }
-                    }else if(st[st.size()-1] == 'B'){
-                        if(st[st.size()-2] == 'R'){
-                            st.pop_back();
-                            st.pop_back();
-                            st.push_back('G');
-                        }else{
-                            st.pop_back();
-                            st.pop_back();
-                            st.push_back('R');
-                        }
-                    }else{
-                        if(st[st.size()-2] == 'B'){
-                            st.pop_back();
-                            st.pop_back();
-                            st.push_back('R');
-                        }else{
-                            st.pop_back();
-                            st.pop_back();
-                            st.push_back('B');
-                        }
-                    }
-                }
-            }else{
-                st.push_back(a[i]);
-            }
+            if(a[i] == 'B') b++;
+            else if(a[i] == 'R') r++;
+            else g++;
         }
-        return st.size()&1 ? 1 : 2;
+        if(r == n || b == n || g == n) return n;
+        if((r&1 && b&1 && g&1) or (r%2 == 0 && b%2 == 0 && g%2 == 0)) return 2;
+        return 1;
     }
 };
 
