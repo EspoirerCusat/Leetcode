@@ -22,7 +22,7 @@ public:
             }
             // if(flag) ans.push_back(1);
             // else ans.push_back(-1);
-            if(flag && jdx >= 0 && jdx < m){
+            if(flag){
                 ans[k] = jdx;
             }
         }
