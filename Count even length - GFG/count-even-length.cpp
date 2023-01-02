@@ -5,65 +5,46 @@ using namespace std;
 // } Driver Code Ends
 class Solution{
 	public:
-	unsigned long long power(unsigned long long x, 
-                                  int y, int p)
-{
-    unsigned long long res = 1; // Initialize result
-  
-    x = x % p; // Update x if it is more than or
-    // equal to p
-  
-    while (y > 0) 
-    {
-      
-        // If y is odd, multiply x with result
-        if (y & 1)
-            res = (res * x) % p;
-  
-        // y must be even now
-        y = y >> 1; // y = y/2
-        x = (x * x) % p;
+    long long int fact[100010];
+    long long int fact_inv[100010];
+    int mod = 1e9+7;
+    int power(long long int a, long long int b,long long int mod){
+        if(b == 1) return a;
+        if(b == 0) return 1;
+        long long int ans = power(a,b/2,mod)%mod;
+        ans = (ans%mod * ans%mod)%mod;
+        ans %= mod;
+        if(b&1) ans = (ans%mod * a%mod)%mod;
+        ans %= mod;
+        return ans%mod;
     }
-    return res;
-}
-  
-// Returns n^(-1) mod p
-unsigned long long modInverse(unsigned long long n,  
-                                            int p)
-{
-    return power(n, p - 2, p);
-}
-  
-// Returns nCr % p using Fermat's little
-// theorem.
-unsigned long long nCrModPFermat(unsigned long long n,
-                                 int r, int p)
-{
-    // If n<r, then nCr should return 0
-    if (n < r)
-        return 0;
-    // Base case
-    if (r == 0)
-        return 1;
-  
-    // Fill factorial array so that we
-    // can find all factorial of r, n
-    // and n-r
-    unsigned long long fac[n + 1];
-    fac[0] = 1;
-    for (int i = 1; i <= n; i++)
-        fac[i] = (fac[i - 1] * i) % p;
-  
-    return (fac[n] * modInverse(fac[r], p) % p
-            * modInverse(fac[n - r], p) % p)
-           % p;
-}
+    int mod_inv(int a, int m){
+        //cout<<power(a,m-2,m)%mod<<" ";
+        return power(a,m-2,m)%mod;
+    }
+    int ncr(int n, int r){
+        if(r > n) return 0;
+        return (fact[n]%mod*(fact_inv[r]%mod*fact_inv[n-r]%mod)%mod)%mod;
+    }
+    void pree(){
+        int N = 100010;
+        fact[0] = 1;
+        for(int i=1; i<N; i++){
+            fact[i] = (fact[i-1]%mod * i%mod)%mod;
+            fact[i] %= mod;
+        }
+        //cout<<fact[N-1]<<" ";
+        fact_inv[N-1] = mod_inv(fact[N-1],mod)%mod;
+        //cout<<fact_inv[N-1]<<" ";
+        for(int i=N-2; i>=0; i--){
+            fact_inv[i] = (fact_inv[i+1]%mod*(i+1)%mod)%mod;
+        }
+    }
 	int compute_value(int n)
 	{
-	   // pree();
+	    pree();
 	    //for(int i=0; i<10; i++) cout<<fact_inv[i]<<" ";
-	    long long mod = 1e9 + 7;
-	    int ans = nCrModPFermat(2*n, n, mod);
+	    int ans = ncr(2*n,n);
 	    return ans;
 	}
 };
